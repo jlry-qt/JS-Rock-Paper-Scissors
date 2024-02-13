@@ -14,9 +14,9 @@
 const CHOICES = ['rock', 'paper', 'scissors'];
 
 
-// Helper function that gives the computer random selection
-function randomChoice(){
-    let index = Math.floor(Math.random() * 3); // Returns a value between 0 - 2
+
+function getComputerChoice(){
+    let index = Math.floor(Math.random() * 3); // Returns a random value between 0 - 2
     return CHOICES[index];
 }
 
@@ -68,13 +68,14 @@ function playGame(){
     let round  = 1;
 
     while (true){
-        let computerChoice = randomChoice();
+        let computerChoice = getComputerChoice();
         
         let playerChoice = prompt(`'Choose ROCK, PAPER, or SCISSORS`).toLowerCase();
 
         let roundResult = playRound(playerChoice, computerChoice);
         
         console.log(roundResult);
+        
         // Exits after 5th round
         if (round === 5){
             break;
