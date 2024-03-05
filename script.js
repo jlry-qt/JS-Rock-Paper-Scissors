@@ -1,16 +1,3 @@
-// Create  rock paper scissors game
-// The game will be played against a computer
-
-
-// SET round to 1
-
-// REPEAT playGame()
-    // computerChoice SET randomly between rock, paper, scissors
-    // GET playerChoice (Assuming that the input is always valid)
-    // CALL playRound with playerChoice and computerChoice returning roundResult
-    // INCREMENT round
-// UNTIL round is 5
-
 const CHOICES = ['rock', 'paper', 'scissors'];
 
 
@@ -22,7 +9,8 @@ function getComputerChoice(){
 
 
 // Function to determine if the player loses or wins the round
-function playRound(playerSelection, computerSelection){
+function playRound(playerSelection){
+    let computerSelection = getComputerChoice();
 
     switch(playerSelection){
         case 'rock':
@@ -64,26 +52,19 @@ function playRound(playerSelection, computerSelection){
 }
 
 
-function playGame(){
-    let round  = 1;
+function playGame(event){
+    let playerChoice = event.target.id;
 
-    while (true){
-        let computerChoice = getComputerChoice();
-        
-        let playerChoice = prompt(`'Choose ROCK, PAPER, or SCISSORS`).toLowerCase();
+    let roundResult = playRound(playerChoice);
 
-        let roundResult = playRound(playerChoice, computerChoice);
-        
-        console.log(roundResult);
-        
-        // Exits after 5th round
-        if (round === 5){
-            break;
-        }
-
-        round += 1
-    }
+    resultElement.innerHTML = roundResult;
 }
 
-playGame();
 
+const resultElement = document.querySelector('#round-result');
+const choicesButtons = document.querySelectorAll('.choices');
+
+
+choicesButtons.forEach(buttons => {
+    buttons.addEventListener('click', playGame);
+});
