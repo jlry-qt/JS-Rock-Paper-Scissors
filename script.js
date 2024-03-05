@@ -1,4 +1,4 @@
-const CHOICES = ['rock', 'paper', 'scissors'];
+const CHOICES = ['ROCK', 'PAPER', 'SCISSOR'];
 
 
 
@@ -7,62 +7,71 @@ function getComputerChoice(){
     return CHOICES[index];
 }
 
-
 // Function to determine if the player loses or wins the round
-function playRound(playerSelection){
-    let computerSelection = getComputerChoice();
+function playRound(playerSelection, computerSelection){
 
-    switch(playerSelection){
-        case 'rock':
-            if (playerSelection === computerSelection){
-                return `It's a DRAW! You both chose ROCK`;
-            }
-            else if (computerSelection === 'scissors'){
-                return `You WIN! ${playerSelection} beats ${computerSelection}`;
-            }
-            else {
-                return `You LOSE! ${playerSelection} loses to ${computerSelection}`;
-            }
+    // 1 = player WINS , 0 = player LOSES, 3 = DRAW
+    if (playerSelection === computerSelection){
+        return 3;
+    }
+
+    switch (playerSelection){
+        case 'ROCK':
+            if (computerSelection === 'SCISSOR') return 1;
+            return 0;
+
+        case 'PAPER':
+            if (computerSelection === 'ROCK') return 1;
+            return 0;
         
-        case 'paper':
-            if (playerSelection === computerSelection){
-                return `It's a DRAW! You both chose PAPER`;
-            }
-            else if (computerSelection === 'rock'){
-                return `You WIN! ${playerSelection} beats ${computerSelection}`;
-            }
-            else {
-                return `You LOSE! ${playerSelection} loses to ${computerSelection}`;
-            }
-
-        case 'scissors':
-            if (playerSelection === computerSelection){
-                return `It's a DRAW! You both chose SCISSORS`;
-            }
-            else if (computerSelection === 'paper'){
-                return `You WIN! ${playerSelection} beats ${computerSelection}`;
-            }
-            else {
-                return `You LOSE! ${playerSelection} loses to ${computerSelection}`;
-            }
-
-        default:
-            return;
+        case 'SCISSOR':
+            if (computerSelection === 'PAPER') return 1;
+            return 0;
     }
 }
 
 
 function playGame(event){
     let playerChoice = event.target.id;
+    let computerChoice = getComputerChoice();
 
-    let roundResult = playRound(playerChoice);
+    let roundResult = playRound(playerChoice, computerChoice);
 
-    resultElement.innerHTML = roundResult;
+    // Decide Win Game
+
+
+    //Decide WIN or LOSE round
+    if (roundResult === 1){
+        resultElement.innerHTML = `You WIN! ${playerChoice} beats ${computerChoice}`;
+        displayPlayerScore.innerHTML = `Player Score : ${++playerScore}`;
+
+    } else if (roundResult === 0){
+        resultElement.innerHTML = `You LOSE! ${playerChoice} loses to ${computerChoice}`;
+        displayComputerScore.innerHTML = `Computer Score : ${++computerScore}`;
+
+    } else {
+        resultElement.innerHTML = `It's a DRAW! You both chose ${playerChoice}`;
+    }
+
+    if (playerScore >= 5 || computerScore >= 5){
+
+        if (playerScore > computerScore){
+            resultElement.innerHTML = 'PLAYER WINS!';
+            document.querySelector('.choices-container').innerHTML = '';
+        } else {
+            resultElement.innerHTML = 'COMPUTER WINS!';
+            document.querySelector('.choices-container').innerHTML = '';
+        }
+    }
 }
 
 
 const resultElement = document.querySelector('#round-result');
 const choicesButtons = document.querySelectorAll('.choices');
+const displayPlayerScore = document.querySelector('#player-score');
+const displayComputerScore = document.querySelector('#computer-score');
+let playerScore = 0;
+let computerScore = 0;
 
 
 choicesButtons.forEach(buttons => {
